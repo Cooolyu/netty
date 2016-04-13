@@ -15,6 +15,7 @@ import com.gmyl.eparking.message.PingMsg;
 import com.gmyl.eparking.message.ReplyClientBody;
 import com.gmyl.eparking.message.ReplyMsg;
 import com.gmyl.eparking.message.ReplyServerBody;
+import com.gmyl.eparking.pojo.CancelOrdReceive;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -66,6 +67,17 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<BaseMsg>{
                 System.out.println("login clientID:"+ loginMsg.getClientId());
                 channelHandlerContext.writeAndFlush(loginMsg);
             }break;
+            
+            case QXYY:{
+            		CancelOrdReceive cancelOrdReceive=(CancelOrdReceive)baseMsg;
+            		System.out.println("myLog start ----"+cancelOrdReceive.getResult());
+            }break;
+            
+            
+            
+            
+            
+            
             case PING:{
                 System.out.println("receive ping from server----------"+new Date());
             }break;

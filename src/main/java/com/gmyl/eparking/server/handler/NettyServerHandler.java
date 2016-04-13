@@ -15,6 +15,7 @@ import com.gmyl.eparking.message.ReplyBody;
 import com.gmyl.eparking.message.ReplyClientBody;
 import com.gmyl.eparking.message.ReplyMsg;
 import com.gmyl.eparking.message.ReplyServerBody;
+import com.gmyl.eparking.pojo.CancelOrdReceive;
 import com.gmyl.eparking.server.NettyChannelMap;
 
 import io.netty.channel.Channel;
@@ -116,6 +117,19 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
                 //ReplyClientBody clientBody=(ReplyClientBody)replyMsg.getBody();
                 System.out.println("receive client msg: "+replyMsg.toString());
             }break;
+            
+            case QXYY:{
+                //取消预约
+                CancelOrdReceive cancelOrdReceive=(CancelOrdReceive)baseMsg;
+                System.out.println("mystop -----"+cancelOrdReceive.getResult());
+                CancelOrdReceive cancelOrdReceive2 = new CancelOrdReceive();
+                cancelOrdReceive2.setResult(100);
+                NettyChannelMap.get(cancelOrdReceive.getClientId()).writeAndFlush(cancelOrdReceive2);
+            }break;
+            
+            
+            
+            
             case LOGOUT:{
             	NettyChannelMap.remove((SocketChannel)channelHandlerContext.channel());
             	

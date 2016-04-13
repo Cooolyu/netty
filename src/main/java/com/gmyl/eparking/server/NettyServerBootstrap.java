@@ -62,7 +62,6 @@ public class NettyServerBootstrap {
     }
     public static void main(String []args) throws InterruptedException {
         NettyServerBootstrap bootstrap=new NettyServerBootstrap(9999);
-        System.out.println("test---------------");
         while (true){
 //        	System.out.println(NettyChannelMap.getKeys());
             /*SocketChannel channel=(SocketChannel)NettyChannelMap.get("101");
@@ -75,6 +74,8 @@ public class NettyServerBootstrap {
         	SocketChannel channel=(SocketChannel)NettyChannelMap.get("101");
         	//SocketChannel channel=(SocketChannel)NettyChannelMap.get;
             if(channel!=null){
+            	System.out.println("---------"+channel.read());
+            	
                 //AskMsg askMsg=new AskMsg();
                 CwyyMsg cwyyMsg = new CwyyMsg();
                 cwyyMsg.setDdh("dhh001");

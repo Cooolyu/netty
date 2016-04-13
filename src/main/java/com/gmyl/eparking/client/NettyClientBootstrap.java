@@ -10,6 +10,7 @@ import com.gmyl.eparking.message.Constants;
 import com.gmyl.eparking.message.JcsjMsg;
 import com.gmyl.eparking.message.LoginMsg;
 import com.gmyl.eparking.message.PingMsg;
+import com.gmyl.eparking.pojo.CancelOrdReceive;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -76,18 +77,28 @@ public class NettyClientBootstrap {
 	            askMsg.setParams(askParams);
 	            bootstrap.socketChannel.writeAndFlush(askMsg);*/
 	            
-	          /*  PingMsg pingMsg = new PingMsg();
+	          PingMsg pingMsg = new PingMsg();
 	            pingMsg.setClientId(Constants.getClientId());
-	            System.out.println("send ping from client----------"+new Date());
 	            
-	            bootstrap.socketChannel.writeAndFlush(pingMsg);*/
-	            JcsjMsg jcsjMsg=new JcsjMsg();
-	            jcsjMsg.setJctime(new Date());
-	            jcsjMsg.setJctype(1);
-	            jcsjMsg.setSycw(100);
-	            jcsjMsg.setCphm("苏E88888");
-	            jcsjMsg.setKh("111");
-	            bootstrap.socketChannel.writeAndFlush(jcsjMsg);
+	            
+	            
+//	            System.out.println("send ping from client----------"+new Date());
+	            
+	            bootstrap.socketChannel.writeAndFlush(pingMsg);
+	            
+	            //取消预约
+	            CancelOrdReceive cancelOrdReceive = new CancelOrdReceive();
+	            cancelOrdReceive.setClientId(Constants.getClientId());
+	            cancelOrdReceive.setResult(1);
+	            bootstrap.socketChannel.writeAndFlush(cancelOrdReceive);
+	            
+//	            JcsjMsg jcsjMsg=new JcsjMsg();
+//	            jcsjMsg.setJctime(new Date());
+//	            jcsjMsg.setJctype(1);
+//	            jcsjMsg.setSycw(100);
+//	            jcsjMsg.setCphm("苏E88888");
+//	            jcsjMsg.setKh("111");
+//	            bootstrap.socketChannel.writeAndFlush(pingMsg);
 	            
 	        }
 	    }
