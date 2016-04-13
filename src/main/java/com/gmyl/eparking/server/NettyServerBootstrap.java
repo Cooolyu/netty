@@ -5,8 +5,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-import com.gmyl.eparking.message.AskMsg;
-import com.gmyl.eparking.message.CwyyMsg;
 import com.gmyl.eparking.server.handler.NettyServerHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -63,29 +61,15 @@ public class NettyServerBootstrap {
     public static void main(String []args) throws InterruptedException {
         NettyServerBootstrap bootstrap=new NettyServerBootstrap(9999);
         while (true){
-//        	System.out.println(NettyChannelMap.getKeys());
-            /*SocketChannel channel=(SocketChannel)NettyChannelMap.get("101");
-            if(channel!=null){
-                AskMsg askMsg=new AskMsg();
-                channel.writeAndFlush(askMsg);
-            }
-            TimeUnit.SECONDS.sleep(5);*/
-        	//System.out.println(NettyChannelMap.getKeys());
         	SocketChannel channel=(SocketChannel)NettyChannelMap.get("101");
-        	//SocketChannel channel=(SocketChannel)NettyChannelMap.get;
-            if(channel!=null){
-            	System.out.println("---------"+channel.read());
-            	
-                //AskMsg askMsg=new AskMsg();
-                CwyyMsg cwyyMsg = new CwyyMsg();
-                cwyyMsg.setDdh("dhh001");
-                cwyyMsg.setCph("苏E88888");
-                cwyyMsg.setQssj(new Date());
-                cwyyMsg.setSc("1");
-                channel.writeAndFlush(cwyyMsg);
-            }
-            TimeUnit.SECONDS.sleep(5);
-        	//System.out.println(NettyChannelMap.getKeys());
+//            if(channel!=null){
+//                CwyyMsg cwyyMsg = new CwyyMsg();
+//                cwyyMsg.setDdh("dhh001");
+//                cwyyMsg.setCph("苏E88888");
+//                cwyyMsg.setQssj(new Date());
+//                cwyyMsg.setSc("1");
+//                channel.writeAndFlush(cwyyMsg);
+//            }
         	TimeUnit.SECONDS.sleep(15);
         }
     }

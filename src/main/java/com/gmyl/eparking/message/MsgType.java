@@ -4,8 +4,10 @@ public enum MsgType {
 
 	/**
 	 * QXYY:取消预约
+	 * JF:计费
+	 * ZF:支付
+	 * YHCL:优惠策略
 	 */
-	PING,ASK,REPLY,LOGIN,LOGIN_REPLY,LOGOUT,JCSJ,JCSJ_REPLY,CWYY,CWYY_REPLY,
-	QXYY
+	PING,LOGIN,LOGIN_REPLY,LOGOUT,QXYY,JF,ZF,YHCL
 	
 }

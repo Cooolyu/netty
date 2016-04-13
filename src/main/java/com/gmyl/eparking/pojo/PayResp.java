@@ -1,38 +1,28 @@
 package com.gmyl.eparking.pojo;
+
+import com.gmyl.eparking.message.BaseMsg;
+import com.gmyl.eparking.message.MsgType;
+
 /**
  * 
  * @author jyy
- *支付返回的数据
+ * 支付返回的数据
  */
-public class PayResp {
+public class PayResp extends BaseMsg{
 
-	private long orderNum;//订单号
-	private String carNum;//车牌号
-	private  int payTime;//付费时间
-	private  int Money;//金额
-	public long getOrderNum() {
-		return orderNum;
+	private int result;//1:NG  0:OK
+	
+	public PayResp() {
+		super();
+		setType(MsgType.ZF);
 	}
-	public void setOrderNum(long orderNum) {
-		this.orderNum = orderNum;
+
+	public int getResult() {
+		return result;
 	}
-	public String getCarNum() {
-		return carNum;
-	}
-	public void setCarNum(String carNum) {
-		this.carNum = carNum;
-	}
-	public int getPayTime() {
-		return payTime;
-	}
-	public void setPayTime(int payTime) {
-		this.payTime = payTime;
-	}
-	public int getMoney() {
-		return Money;
-	}
-	public void setMoney(int money) {
-		Money = money;
+
+	public void setResult(int result) {
+		this.result = result;
 	}
 	
 }

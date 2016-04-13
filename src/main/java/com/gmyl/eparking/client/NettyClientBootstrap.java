@@ -4,13 +4,13 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import com.gmyl.eparking.client.handler.NettyClientHandler;
-import com.gmyl.eparking.message.AskMsg;
-import com.gmyl.eparking.message.AskParams;
 import com.gmyl.eparking.message.Constants;
-import com.gmyl.eparking.message.JcsjMsg;
 import com.gmyl.eparking.message.LoginMsg;
-import com.gmyl.eparking.message.PingMsg;
-import com.gmyl.eparking.pojo.CancelOrdReceive;
+import com.gmyl.eparking.pojo.BillResp;
+import com.gmyl.eparking.pojo.BillSend;
+import com.gmyl.eparking.pojo.CancelOrdSend;
+import com.gmyl.eparking.pojo.PaySend;
+import com.gmyl.eparking.pojo.PromotSend;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -63,42 +63,44 @@ public class NettyClientBootstrap {
 	    public static void main(String[]args) throws InterruptedException {
 	        Constants.setClientId("101");
 	        NettyClientBootstrap bootstrap=new NettyClientBootstrap(9999,"127.0.0.1");
-	        //NettyClientBootstrap bootstrap=new NettyClientBootstrap(9999,"172.0.0.119");
 	        LoginMsg loginMsg=new LoginMsg();
 	        loginMsg.setPassword("yao");
 	        loginMsg.setUserName("robin1");
 	        bootstrap.socketChannel.writeAndFlush(loginMsg);
 	        while (true){
 	            TimeUnit.SECONDS.sleep(15);
-	            /*AskMsg askMsg=new AskMsg();
-	            askMsg.setClientId(Constants.getClientId());
-	            AskParams askParams=new AskParams();
-	            askParams.setAuth("authToken");
-	            askMsg.setParams(askParams);
-	            bootstrap.socketChannel.writeAndFlush(askMsg);*/
-	            
-	          PingMsg pingMsg = new PingMsg();
-	            pingMsg.setClientId(Constants.getClientId());
-	            
-	            
-	            
-//	            System.out.println("send ping from client----------"+new Date());
-	            
-	            bootstrap.socketChannel.writeAndFlush(pingMsg);
-	            
 	            //取消预约
-	            CancelOrdReceive cancelOrdReceive = new CancelOrdReceive();
-	            cancelOrdReceive.setClientId(Constants.getClientId());
-	            cancelOrdReceive.setResult(1);
-	            bootstrap.socketChannel.writeAndFlush(cancelOrdReceive);
+	            CancelOrdSend cancelOrdSend = new CancelOrdSend();
+	            cancelOrdSend.setClientId(Constants.getClientId());
+	            cancelOrdSend.setCarNum("苏M110");
+	            cancelOrdSend.setOrderNum(111111);
+	            bootstrap.socketChannel.writeAndFlush(cancelOrdSend);
 	            
-//	            JcsjMsg jcsjMsg=new JcsjMsg();
-//	            jcsjMsg.setJctime(new Date());
-//	            jcsjMsg.setJctype(1);
-//	            jcsjMsg.setSycw(100);
-//	            jcsjMsg.setCphm("苏E88888");
-//	            jcsjMsg.setKh("111");
-//	            bootstrap.socketChannel.writeAndFlush(pingMsg);
+	            //计费
+	            TimeUnit.SECONDS.sleep(5);
+	            BillSend billSend = new BillSend();
+	            billSend.setCarNum("苏112");
+	            billSend.setClientId(Constants.getClientId());
+	            bootstrap.socketChannel.writeAndFlush(billSend);
+	            
+	            	//支付
+	            TimeUnit.SECONDS.sleep(5);
+	            PaySend paySend = new PaySend();
+	            paySend.setClientId(Constants.getClientId());
+	            paySend.setOrderNum(119);
+	            paySend.setCarNum("苏119");
+	            paySend.setPayTime(System.currentTimeMillis());
+	            paySend.setMoney(100);
+	            bootstrap.socketChannel.writeAndFlush(paySend);
+	            
+	            //优惠策略
+	            TimeUnit.SECONDS.sleep(5);
+	            PromotSend promotSend = new PromotSend();
+	            promotSend.setClientId(Constants.getClientId());
+	            promotSend.setPromotType(1);
+	            promotSend.setUserIdentity("1");
+	            promotSend.setPromotcontent(1);
+	            bootstrap.socketChannel.writeAndFlush(promotSend);
 	            
 	        }
 	    }

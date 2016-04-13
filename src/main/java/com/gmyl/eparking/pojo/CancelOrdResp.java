@@ -1,24 +1,28 @@
 package com.gmyl.eparking.pojo;
+
+import com.gmyl.eparking.message.BaseMsg;
+import com.gmyl.eparking.message.MsgType;
+
 /**
  * 
  * @author jyy
- *取消预约返回数据
+ *取消预约接受的数据
  */
-public class CancelOrdResp {
+public class CancelOrdResp extends BaseMsg {
+ 
+	private int result;//1:NG  0:OK
+	
+	public CancelOrdResp(){
+        super();
+        setType(MsgType.QXYY);
+	}
 
-	private long orderNum;//订单号
-	private String carNum;//车牌号
-	public long getOrderNum() {
-		return orderNum;
+	public int getResult() {
+		return result;
 	}
-	public void setOrderNum(long orderNum) {
-		this.orderNum = orderNum;
-	}
-	public String getCarNum() {
-		return carNum;
-	}
-	public void setCarNum(String carNum) {
-		this.carNum = carNum;
+
+	public void setResult(int result) {
+		this.result = result;
 	}
 	
 }

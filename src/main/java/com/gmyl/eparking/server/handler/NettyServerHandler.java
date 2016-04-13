@@ -1,21 +1,19 @@
 package com.gmyl.eparking.server.handler;
 
-import java.util.Date;
+import java.util.Random;
 
-import com.gmyl.eparking.message.AskMsg;
 import com.gmyl.eparking.message.BaseMsg;
-import com.gmyl.eparking.message.CwyyReplyMsg;
-import com.gmyl.eparking.message.JCSJReplyMSG;
-import com.gmyl.eparking.message.JcsjMsg;
 import com.gmyl.eparking.message.LoginMsg;
 import com.gmyl.eparking.message.LoginReplyMsg;
 import com.gmyl.eparking.message.MsgType;
-import com.gmyl.eparking.message.PingMsg;
-import com.gmyl.eparking.message.ReplyBody;
-import com.gmyl.eparking.message.ReplyClientBody;
-import com.gmyl.eparking.message.ReplyMsg;
-import com.gmyl.eparking.message.ReplyServerBody;
-import com.gmyl.eparking.pojo.CancelOrdReceive;
+import com.gmyl.eparking.pojo.BillSend;
+import com.gmyl.eparking.pojo.BillResp;
+import com.gmyl.eparking.pojo.CancelOrdResp;
+import com.gmyl.eparking.pojo.CancelOrdSend;
+import com.gmyl.eparking.pojo.PayResp;
+import com.gmyl.eparking.pojo.PaySend;
+import com.gmyl.eparking.pojo.PromotResp;
+import com.gmyl.eparking.pojo.PromotSend;
 import com.gmyl.eparking.server.NettyChannelMap;
 
 import io.netty.channel.Channel;
@@ -78,56 +76,61 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
             
             
         }
-        switch (baseMsg.getType()){
-	        case JCSJ:{
-	            JcsjMsg jcsjMsg=(JcsjMsg)baseMsg;
-	            JCSJReplyMSG replyMsg = new JCSJReplyMSG();
-	            replyMsg.setResult(0);
-	            replyMsg.setUsertype(0);
-	            replyMsg.setYe(100);
-	            replyMsg.setXyed(30);
-	            System.out.println("receive client JCSJ clientId="+baseMsg.getClientId()+" "+new Date());
-	            NettyChannelMap.get(jcsjMsg.getClientId()).writeAndFlush(replyMsg);
-	        }break;
-            case PING:{
-                PingMsg pingMsg=(PingMsg)baseMsg;
-                PingMsg replyPing=new PingMsg();
-                System.out.println("receive client ping:keepalive clientId="+baseMsg.getClientId()+" "+new Date());
-                NettyChannelMap.get(pingMsg.getClientId()).writeAndFlush(replyPing);
-            }break;
-            case ASK:{
-                //收到客户端的请求
-                AskMsg askMsg=(AskMsg)baseMsg;
-                if("authToken".equals(askMsg.getParams().getAuth())){
-                    ReplyServerBody replyBody=new ReplyServerBody("server info $$$$ !!!");
-                    ReplyMsg replyMsg=new ReplyMsg();
-                    replyMsg.setBody(replyBody);
-                    NettyChannelMap.get(askMsg.getClientId()).writeAndFlush(replyMsg);
-                }
-            }break;
-            case REPLY:{
-                //收到客户端回复
-                ReplyMsg replyMsg=(ReplyMsg)baseMsg;
-                ReplyClientBody clientBody=(ReplyClientBody)replyMsg.getBody();
-                System.out.println("receive client msg: "+clientBody.getClientInfo());
-            }break;
-            case CWYY_REPLY:{
-                //收到客户端回复
-                CwyyReplyMsg replyMsg=(CwyyReplyMsg)baseMsg;
-                //ReplyClientBody clientBody=(ReplyClientBody)replyMsg.getBody();
-                System.out.println("receive client msg: "+replyMsg.toString());
-            }break;
-            
+        switch (baseMsg.getType()){       
             case QXYY:{
                 //取消预约
-                CancelOrdReceive cancelOrdReceive=(CancelOrdReceive)baseMsg;
-                System.out.println("mystop -----"+cancelOrdReceive.getResult());
-                CancelOrdReceive cancelOrdReceive2 = new CancelOrdReceive();
-                cancelOrdReceive2.setResult(100);
-                NettyChannelMap.get(cancelOrdReceive.getClientId()).writeAndFlush(cancelOrdReceive2);
+            		//接收客户端发送的数据
+                CancelOrdSend cancelOrdSend = (CancelOrdSend)baseMsg;
+                System.out.println("正在取消预约-----"+"车牌号"+cancelOrdSend.getCarNum()+"订单号"+cancelOrdSend.getOrderNum());
+                CancelOrdResp cancelOrdResp = new CancelOrdResp();
+                Random rd = new Random();
+                cancelOrdResp.setResult(rd.nextInt(2));
+                NettyChannelMap.get(cancelOrdSend.getClientId()).writeAndFlush(cancelOrdResp);
             }break;
             
+            case JF:{
+            		//计费
+            		//接收客户端发送的数据
+            		BillSend billSend = (BillSend)baseMsg;
+            		System.out.println("正在进行计费------"
+            							+"计费的车牌号:"+billSend.getCarNum());
+            		BillResp billResp = new BillResp();
+            		Random rd = new Random();
+            		billResp.setResult(rd.nextInt(2));
+            		billResp.setOrderNum(111111);
+            		billResp.setPayMoney(1111);
+            		billResp.setEnterTime(System.currentTimeMillis());
+            		billResp.setParkTime(10);
+                NettyChannelMap.get(billSend.getClientId()).writeAndFlush(billResp);
+            }break;
             
+            case ZF:{
+            		//支付
+            	    //接收客户端发送的数据
+            		PaySend paySend = (PaySend)baseMsg;
+            		System.out.println("正在进行支付------"
+            							+"车牌号:"+paySend.getCarNum()
+            							+"订单号:"+paySend.getOrderNum()
+            							+"付费时长"+paySend.getPayTime()
+            							+"金额:"+paySend.getMoney());
+            		Random rd = new Random();
+            		PayResp payResp = new PayResp();
+            		payResp.setResult(rd.nextInt(2));
+            		NettyChannelMap.get(paySend.getClientId()).writeAndFlush(payResp);
+            }
+            
+            case YHCL:{
+            		//优惠策略
+            		PromotSend promotSend = (PromotSend)baseMsg;
+            		System.out.println("正在进行优惠策略------"
+            							+"用户身份:"+promotSend.getUserIdentity()
+            							+"优惠类型:"+promotSend.getPromotType()
+            							+"优惠内容:"+promotSend.getPromotcontent());
+            		Random rd = new Random();
+            		PromotResp promotResp = new PromotResp();
+            		promotResp.setResult(rd.nextInt(2));
+            		NettyChannelMap.get(promotSend.getClientId()).writeAndFlush(promotResp);
+            }
             
             
             case LOGOUT:{
