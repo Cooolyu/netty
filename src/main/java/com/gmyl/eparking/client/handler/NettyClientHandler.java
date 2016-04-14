@@ -3,15 +3,15 @@ package com.gmyl.eparking.client.handler;
 import java.util.Date;
 
 import com.gmyl.eparking.message.BaseMsg;
+import com.gmyl.eparking.message.BillResp;
+import com.gmyl.eparking.message.BillSend;
+import com.gmyl.eparking.message.CancelOrdResp;
 import com.gmyl.eparking.message.Constants;
 import com.gmyl.eparking.message.LoginMsg;
 import com.gmyl.eparking.message.MsgType;
+import com.gmyl.eparking.message.PayResp;
 import com.gmyl.eparking.message.PingMsg;
-import com.gmyl.eparking.pojo.BillResp;
-import com.gmyl.eparking.pojo.BillSend;
-import com.gmyl.eparking.pojo.CancelOrdResp;
-import com.gmyl.eparking.pojo.PayResp;
-import com.gmyl.eparking.pojo.PromotResp;
+import com.gmyl.eparking.message.PromotResp;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

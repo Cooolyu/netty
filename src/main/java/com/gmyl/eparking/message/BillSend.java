@@ -1,7 +1,4 @@
-package com.gmyl.eparking.pojo;
-
-import com.gmyl.eparking.message.BaseMsg;
-import com.gmyl.eparking.message.MsgType;
+package com.gmyl.eparking.message;
 
 /**
  * 

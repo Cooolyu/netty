@@ -3,17 +3,17 @@ package com.gmyl.eparking.server.handler;
 import java.util.Random;
 
 import com.gmyl.eparking.message.BaseMsg;
+import com.gmyl.eparking.message.BillResp;
+import com.gmyl.eparking.message.BillSend;
+import com.gmyl.eparking.message.CancelOrdResp;
+import com.gmyl.eparking.message.CancelOrdSend;
 import com.gmyl.eparking.message.LoginMsg;
 import com.gmyl.eparking.message.LoginReplyMsg;
 import com.gmyl.eparking.message.MsgType;
-import com.gmyl.eparking.pojo.BillSend;
-import com.gmyl.eparking.pojo.BillResp;
-import com.gmyl.eparking.pojo.CancelOrdResp;
-import com.gmyl.eparking.pojo.CancelOrdSend;
-import com.gmyl.eparking.pojo.PayResp;
-import com.gmyl.eparking.pojo.PaySend;
-import com.gmyl.eparking.pojo.PromotResp;
-import com.gmyl.eparking.pojo.PromotSend;
+import com.gmyl.eparking.message.PayResp;
+import com.gmyl.eparking.message.PaySend;
+import com.gmyl.eparking.message.PromotResp;
+import com.gmyl.eparking.message.PromotSend;
 import com.gmyl.eparking.server.NettyChannelMap;
 
 import io.netty.channel.Channel;
@@ -97,10 +97,10 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
             		BillResp billResp = new BillResp();
             		Random rd = new Random();
             		billResp.setResult(rd.nextInt(2));
-            		billResp.setOrderNum(111111);
-            		billResp.setPayMoney(1111);
+            		billResp.setOrderNum(rd.nextInt(100));
+            		billResp.setPayMoney(rd.nextInt(100));
             		billResp.setEnterTime(System.currentTimeMillis());
-            		billResp.setParkTime(10);
+            		billResp.setParkTime(rd.nextInt(10));
                 NettyChannelMap.get(billSend.getClientId()).writeAndFlush(billResp);
             }break;
             
@@ -117,7 +117,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
             		PayResp payResp = new PayResp();
             		payResp.setResult(rd.nextInt(2));
             		NettyChannelMap.get(paySend.getClientId()).writeAndFlush(payResp);
-            }
+            }break;
             
             case YHCL:{
             		//优惠策略
@@ -130,7 +130,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
             		PromotResp promotResp = new PromotResp();
             		promotResp.setResult(rd.nextInt(2));
             		NettyChannelMap.get(promotSend.getClientId()).writeAndFlush(promotResp);
-            }
+            }break;
             
             
             case LOGOUT:{

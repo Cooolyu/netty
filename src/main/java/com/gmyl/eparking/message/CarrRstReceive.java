@@ -1,4 +1,4 @@
-package com.gmyl.eparking.pojo;
+package com.gmyl.eparking.message;
 /**
  * 
  * @author jyy
