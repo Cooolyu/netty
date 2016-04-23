@@ -2,6 +2,7 @@ package com.gmyl.eparking.server.handler;
 
 import java.util.Random;
 
+import com.gmyl.eparking.gui.ServerGui;
 import com.gmyl.eparking.message.BaseMsg;
 import com.gmyl.eparking.message.BillResp;
 import com.gmyl.eparking.message.BillSend;
@@ -33,6 +34,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
     protected void messageReceived(ChannelHandlerContext channelHandlerContext, BaseMsg baseMsg) throws Exception {
  
         if(MsgType.LOGIN.equals(baseMsg.getType())){
+        	ServerGui serverGui = new ServerGui(); 
             LoginMsg loginMsg=(LoginMsg)baseMsg;
             if("robin".equals(loginMsg.getUserName())&&"yao".equals(loginMsg.getPassword())){
             	//登录成功,把channel存到服务端的map中
