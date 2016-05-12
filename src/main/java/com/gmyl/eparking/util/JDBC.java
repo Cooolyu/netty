@@ -23,7 +23,7 @@ public class JDBC {
             /* 获取表达式*/
             stmt = (Statement) conn.createStatement();
             /*  插入数据*/
-//            stmt.executeUpdate("insert into people (name,age) values ('test',20)");
+            stmt.executeUpdate("insert into clientMsg (message,addTime,type) values ('1',null,'10')");
             /* 执行SQL*/
             rs = stmt.executeQuery("select count(*) as count  from user where name='test' and password='20'");
 //            System.out.println(rs);

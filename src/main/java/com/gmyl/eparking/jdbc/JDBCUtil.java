@@ -30,18 +30,17 @@ public class JDBCUtil {
     }
     
     //添加
-    public int addSql(String sql){
+    public void addSql(String sql){
 		try {
 			/* 加载驱动 */
 			Class.forName("com.mysql.jdbc.Driver");
 			/* 连接到数据库 */
 			conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/netty?", "root", "root");
 			/* 获取表达式 */
+			stmt = (Statement) conn.createStatement();
 			stmt.executeUpdate(sql);
-			return 1;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return 0;
+			System.out.println(e.toString());
 		}
     }
     
@@ -53,6 +52,7 @@ public class JDBCUtil {
 			/* 连接到数据库 */
 			conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/netty?", "root", "root");
 			/* 获取表达式 */
+			stmt = (Statement) conn.createStatement();
 			stmt.executeUpdate(sql);
 			return 1;
 		} catch (Exception e) {

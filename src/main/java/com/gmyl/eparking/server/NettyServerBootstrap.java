@@ -62,14 +62,7 @@ public class NettyServerBootstrap {
         NettyServerBootstrap bootstrap=new NettyServerBootstrap(9999);
         while (true){
         	SocketChannel channel=(SocketChannel)NettyChannelMap.get("101");
-//            if(channel!=null){
-//                CwyyMsg cwyyMsg = new CwyyMsg();
-//                cwyyMsg.setDdh("dhh001");
-//                cwyyMsg.setCph("苏E88888");
-//                cwyyMsg.setQssj(new Date());
-//                cwyyMsg.setSc("1");
-//                channel.writeAndFlush(cwyyMsg);
-//            }
+
         	TimeUnit.SECONDS.sleep(15);
         }
     }

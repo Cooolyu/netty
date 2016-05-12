@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -83,16 +84,44 @@ public class LoginClient {
 				}	
 				
 				//向服务端发送请求
-				Constants.setClientId("101");
-		        try {
-					NettyClientBootstrap bootstrap=new NettyClientBootstrap(9999,"127.0.0.1");
-			        LoginMsg loginMsg=new LoginMsg();
-			        loginMsg.setPassword("yao");
-			        loginMsg.setUserName("robin1");
-			        bootstrap.socketChannel.writeAndFlush(loginMsg);
-				} catch (InterruptedException e1) {
+//				Constants.setClientId("101");
+//		        try {
+//					NettyClientBootstrap bootstrap=new NettyClientBootstrap(9999,"127.0.0.1");
+//			        LoginMsg loginMsg=new LoginMsg();
+//			        loginMsg.setPassword("yao");
+//			        loginMsg.setUserName("robin1");
+//			        bootstrap.socketChannel.writeAndFlush(loginMsg);
+//				} catch (InterruptedException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+				
+				//插入登录记录
+				String insertsql = "insert into clientMsg ( message , addTime , type) values ('"+nameStr+"-"+passwordStr+"','"+System.currentTimeMillis()+"','login')";                                        
+				JDBCUtil jdbcUtil = new JDBCUtil();
+				jdbcUtil.addSql(insertsql);
+				
+				try {
+				TimeUnit.SECONDS.sleep(2);
+				
+				//查询记录
+				String sql = "SELECT * from serverMsg WHERE addTime = (SELECT MAX(addTime) from serverMsg )";
+				ResultSet resultSet = jdbcUtil.selectSql(sql);
+				resultSet.next();
+				System.out.println(resultSet.getString("Type"));
+					if(resultSet.getString("Type").equals("login"))
+						if (resultSet.getString("message").equals("error")) {
+							JOptionPane.showMessageDialog(null,  "用户不存在，请重新登陆","error",JOptionPane.ERROR_MESSAGE);
+						}else{
+						frmAgent.setVisible(false);
+						MenuGui menuGui = new MenuGui();
+						menuGui.create();
+						}
+							
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					System.out.println(e1.getMessage());
 				}
 				
 				
@@ -100,20 +129,23 @@ public class LoginClient {
 				
 				//查询数据库，判断是否存在
 //				String sql = "select count(*) as count from user where name='"+nameStr+"' and password='"+passwordStr+"'";
-//				
+//				String sql = "SELECT * from serverMsg WHERE addTime = (SELECT MAX(addTime) from serverMsg )";
 //				JDBCUtil jdbcUtil = new JDBCUtil();
 //				ResultSet resultSet = jdbcUtil.selectSql(sql);
 //				try {
-//					resultSet.next();
-//					int count = resultSet.getInt("count");
-//					if (count == 0) {
-//						JOptionPane.showMessageDialog(null,  "用户不存在，请重新登陆","error",JOptionPane.ERROR_MESSAGE);
-//					}else{
-//						System.err.println("跳转窗口");
-//						frmAgent.setVisible(false);
-//						MenuGui menuGui = new MenuGui();
-//						menuGui.create();
-//					}
+//					if (resultSet.next() == false){
+//					System.out.println("null");
+//					return;}
+//					String count = resultSet.getString("message");
+//					System.out.println(count);
+////					if (count == 0) {
+////						JOptionPane.showMessageDialog(null,  "用户不存在，请重新登陆","error",JOptionPane.ERROR_MESSAGE);
+////					}else{
+////						System.err.println("跳转窗口");
+////						frmAgent.setVisible(false);
+////						MenuGui menuGui = new MenuGui();
+////						menuGui.create();
+////					}
 //				} catch (SQLException e1) {
 //					// TODO Auto-generated catch block
 //					e1.printStackTrace();
