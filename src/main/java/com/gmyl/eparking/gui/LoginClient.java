@@ -1,11 +1,9 @@
 package com.gmyl.eparking.gui;
 
 import java.awt.EventQueue;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.GroupLayout;
@@ -16,10 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import com.gmyl.eparking.client.NettyClientBootstrap;
 import com.gmyl.eparking.jdbc.JDBCUtil;
-import com.gmyl.eparking.message.Constants;
-import com.gmyl.eparking.message.LoginMsg;
 
 public class LoginClient {
 

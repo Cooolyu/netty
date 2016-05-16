@@ -19,18 +19,9 @@ public class MenuGui extends JFrame {
 
 	private JPanel contentPane;
 	
-	private String temp;
-	
-	
 
-	public String getTemp() {
-		return temp;
-	}
 
-	public void setTemp(String temp) {
-		this.temp = temp;
-	}
-
+	private static MenuGui frame;
 	/**
 	 * Launch the application.
 	 */
@@ -38,7 +29,7 @@ public class MenuGui extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MenuGui frame = new MenuGui();
+					frame = new MenuGui();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -59,19 +50,42 @@ public class MenuGui extends JFrame {
 		
 		JLabel label = new JLabel("功能菜单");
 		
-		JButton btnNewButton = new JButton("取消预约");
+		JButton btnNewButton = new JButton("预约");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frame.setVisible(false);
+				CancelOrder cancelOrder = new CancelOrder();
+				cancelOrder.create();
+				
 			}
 		});
 		
 		JButton btnNewButton_1 = new JButton("计    费");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setVisible(false);
+				Jf jf = new Jf();
+				jf.create();
+				
+				
+			}
+		});
 		
 		JButton btnNewButton_2 = new JButton("支    付");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setVisible(false);
+				Zf zf = new Zf();
+				zf.create();
+			}
+		});
 		
 		JButton btnNewButton_3 = new JButton("优惠策略");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frame.setVisible(false);
+				Yhcl yhcl = new Yhcl();
+				yhcl.create();
 			}
 		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);

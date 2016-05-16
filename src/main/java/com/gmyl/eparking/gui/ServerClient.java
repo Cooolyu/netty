@@ -76,37 +76,92 @@ public class ServerClient {
 						String message = resultSet.getString("message");
 						String type = resultSet.getString("type");
 						String[] arr = message.split("-");
-						String name = arr[0];
-						String password = arr[1];
 						long addTime = resultSet.getLong("addTime");
 						SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 						String compare = ""+time.format(addTime);
 						if(textArea.getText().contains(compare))
 							return;
-						
-						
-						//反馈事件
-						sql = "select count(*) as count from user where name='"+name+"' and password='"+password+"'";
-						ResultSet resultSet1 = jdbcUtil.selectSql(sql);
-						resultSet1.next();
-						if (resultSet1.getInt("count") == 0) {
-							String reMsg = "error";
-							sql = "insert into serverMsg ( message , addTime , type) values ('"+reMsg+"','"+System.currentTimeMillis()+"','login')";                                        
-							jdbcUtil.addSql(sql);
-						}else{
-							String reMsg = "success";
-							sql = "insert into serverMsg ( message , addTime , type) values ('"+reMsg+"','"+System.currentTimeMillis()+"','login')";                                        
-							jdbcUtil.addSql(sql);
+						if(type.equals("login")){
+							String name = arr[0];
+							String password = arr[1];
+							//反馈事件
+							sql = "select count(*) as count from user where name='"+name+"' and password='"+password+"'";
+							ResultSet resultSet1 = jdbcUtil.selectSql(sql);
+							resultSet1.next();
+							if (resultSet1.getInt("count") == 0) {
+								String reMsg = "error";
+								sql = "insert into serverMsg ( message , addTime , type) values ('"+reMsg+"','"+System.currentTimeMillis()+"','login')";                                        
+								jdbcUtil.addSql(sql);
+							}else{
+								String reMsg = "success";
+								sql = "insert into serverMsg ( message , addTime , type) values ('"+reMsg+"','"+System.currentTimeMillis()+"','login')";                                        
+								jdbcUtil.addSql(sql);
+							}
+							
+							
+							String temp = "用户名:"+name+"\t"+"密码:"+password+"\t"+"登陆时间:"+time.format(addTime);
+							if(textArea.getText() == null || textArea.getText().isEmpty()){
+								textArea.setText(temp);
+							}else{
+								textArea.setText(temp+"\n"+textArea.getText());
+							}
 						}
 						
 						
-						String temp = "用户名:"+name+"\t"+"密码:"+password+"\t"+"登陆时间:"+time.format(addTime);
-						if(textArea.getText() == null || textArea.getText().isEmpty()){
-							textArea.setText(temp);
-						}else{
+						if(type.equals("cancelOrder")){
+							String temp = "订单号:"+arr[0]+"\t"+"车牌号:"+arr[1]+"\t"+"发送时间:"+time.format(addTime);
 							textArea.setText(temp+"\n"+textArea.getText());
-							JOptionPane.showInputDialog("请输入");
+							
+							String result = JOptionPane.showInputDialog("请输入取消订单的返回值");
+							sql = "insert into serverMsg ( message , addTime , type) values ('"+result+"','"+System.currentTimeMillis()+"','cancelOrder')";                                        
+							jdbcUtil.addSql(sql);
 						}
+						
+						if(type.equals("jf")){
+							String temp = "车牌号:"+arr[0]+"\t"+"发送时间:"+time.format(addTime);
+							textArea.setText(temp+"\n"+textArea.getText());
+							
+							String result = JOptionPane.showInputDialog("是否成功");
+							
+							if(result.equals("success")){
+								String orderNum = JOptionPane.showInputDialog("订单号");
+								String money = JOptionPane.showInputDialog("需付金额");
+								String intime = JOptionPane.showInputDialog("入场时间");
+								String timelong = JOptionPane.showInputDialog("停车时长");
+								result = result+'-'+orderNum+'-'+money+'-'+intime+'-'+timelong;
+							}
+							sql = "insert into serverMsg ( message , addTime , type) values ('"+result+"','"+System.currentTimeMillis()+"','jf')";                                        
+							jdbcUtil.addSql(sql);
+						}
+						
+
+						if(type.equals("zf")){
+							String temp = "订单号:"+arr[0]+"\t"+"车牌号:"+arr[1]+"\t金额:"+arr[2]+"\t支付时间:"+arr[3]      +"\t发送时间:"+time.format(addTime);
+							textArea.setText(temp+"\n"+textArea.getText());
+							
+							String result = JOptionPane.showInputDialog("是否成功");
+							
+							sql = "insert into serverMsg ( message , addTime , type) values ('"+result+"','"+System.currentTimeMillis()+"','zf')";                                        
+							jdbcUtil.addSql(sql);
+						}
+						
+						if(type.equals("yhcl")){
+							String temp = "用户身份:"+arr[0]+"\t"+"发送时间:"+time.format(addTime);
+							textArea.setText(temp+"\n"+textArea.getText());
+							
+							String result = JOptionPane.showInputDialog("是否成功");
+							if(result.equals("success")){
+								sql = "select PromotType ,Promotcontent from promot where userIdentity='"+arr[0]+"'";
+								ResultSet resultSet1 = jdbcUtil.selectSql(sql);
+								resultSet1.next();
+								result = result+'-'+resultSet1.getString("PromotType")+'-'+resultSet1.getString("Promotcontent");
+							}
+							
+							
+							sql = "insert into serverMsg ( message , addTime , type) values ('"+result+"','"+System.currentTimeMillis()+"','zf')";                                        
+							jdbcUtil.addSql(sql);
+						}
+
 						
 					}
 				} catch (SQLException e) {
