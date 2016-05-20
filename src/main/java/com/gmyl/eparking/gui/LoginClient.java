@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.gmyl.eparking.jdbc.JDBCUtil;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class LoginClient {
 
@@ -148,24 +149,34 @@ public class LoginClient {
 				
 			}
 		});
+		
+		JButton button = new JButton("重置");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				passwordField.setText("");
+				nameField.setText("");
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(frmAgent.getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap(77, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(name)
-						.addComponent(password))
-					.addGap(46)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(submit, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())
 						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(name)
+								.addComponent(password))
+							.addGap(46)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(nameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(154))))
+							.addGap(154))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(submit, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
+							.addGap(88)
+							.addComponent(button)
+							.addContainerGap())))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -178,9 +189,11 @@ public class LoginClient {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(password)
 						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(43)
-					.addComponent(submit)
-					.addContainerGap(61, Short.MAX_VALUE))
+					.addGap(47)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(submit)
+						.addComponent(button))
+					.addContainerGap(57, Short.MAX_VALUE))
 		);
 		frmAgent.getContentPane().setLayout(groupLayout);
 	}

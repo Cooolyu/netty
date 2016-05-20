@@ -42,13 +42,12 @@ public class MenuGui extends JFrame {
 	 * Create the frame.
 	 */
 	public MenuGui() {
+		setTitle("管理员菜单");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 543, 141);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		
-		JLabel label = new JLabel("功能菜单");
 		
 		JButton btnNewButton = new JButton("预约");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -80,49 +79,43 @@ public class MenuGui extends JFrame {
 			}
 		});
 		
-		JButton btnNewButton_3 = new JButton("优惠策略");
-		btnNewButton_3.addActionListener(new ActionListener() {
+		JButton btnNewButton_4 = new JButton("取消预约");
+		
+		JButton btnNewButton_5 = new JButton("位置查询");
+		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
-				Yhcl yhcl = new Yhcl();
-				yhcl.create();
+				SelectLocation sl = new SelectLocation();
+				sl.create();
 			}
 		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-					.addGap(176)
-					.addComponent(label)
-					.addContainerGap(212, Short.MAX_VALUE))
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(32)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(btnNewButton_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addGap(138)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(btnNewButton_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnNewButton_1, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
-					.addGap(62))
+					.addContainerGap()
+					.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+					.addGap(18)
+					.addComponent(btnNewButton_1, GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnNewButton_2)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnNewButton_5)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnNewButton_4)
+					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(20)
-							.addComponent(label))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(72)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnNewButton)
-								.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))))
-					.addGap(55)
+					.addGap(22)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnNewButton)
+						.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnNewButton_2, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnNewButton_3, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(83, Short.MAX_VALUE))
+						.addComponent(btnNewButton_4)
+						.addComponent(btnNewButton_5))
+					.addContainerGap(58, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
 	}

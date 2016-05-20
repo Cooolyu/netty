@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 import com.gmyl.eparking.jdbc.JDBCUtil;
 
@@ -77,7 +77,7 @@ public class ServerClient {
 						String type = resultSet.getString("type");
 						String[] arr = message.split("-");
 						long addTime = resultSet.getLong("addTime");
-						SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+						SimpleDateFormat time=new SimpleDateFormat("yyyy年MM月dd HH时mm分ss秒");
 						String compare = ""+time.format(addTime);
 						if(textArea.getText().contains(compare))
 							return;
@@ -109,11 +109,15 @@ public class ServerClient {
 						
 						
 						if(type.equals("cancelOrder")){
-							String temp = "订单号:"+arr[0]+"\t"+"车牌号:"+arr[1]+"\t"+"发送时间:"+time.format(addTime);
+							String temp = "车牌号:"+arr[0]+"\t"+"入场时间:"+arr[1]+"\t"+"入场时长:"+arr[2]+"\t"+"发送时间:"+time.format(addTime);
 							textArea.setText(temp+"\n"+textArea.getText());
 							
-							String result = JOptionPane.showInputDialog("请输入取消订单的返回值");
-							sql = "insert into serverMsg ( message , addTime , type) values ('"+result+"','"+System.currentTimeMillis()+"','cancelOrder')";                                        
+							//生成订单号
+							SimpleDateFormat time2=new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+							arr = (time2.format(System.currentTimeMillis())+"").split("-");
+							Random rd = new Random();
+							String orderNum = arr[0]+arr[1]+arr[2]+arr[3]+arr[4]+rd.nextInt(10);
+							sql = "insert into serverMsg ( message , addTime , type) values ('"+orderNum+"','"+System.currentTimeMillis()+"','cancelOrder')";                                        
 							jdbcUtil.addSql(sql);
 						}
 						
@@ -158,7 +162,22 @@ public class ServerClient {
 							}
 							
 							
-							sql = "insert into serverMsg ( message , addTime , type) values ('"+result+"','"+System.currentTimeMillis()+"','zf')";                                        
+							sql = "insert into serverMsg ( message , addTime , type) values ('"+result+"','"+System.currentTimeMillis()+"','selectLocation')";                                        
+							jdbcUtil.addSql(sql);
+						}
+						
+						if(type.equals("selectLocation")){
+							String temp = "车牌号:"+arr[0]+"\t"+"发送时间:"+time.format(addTime);
+							textArea.setText(temp+"\n"+textArea.getText());
+							
+							
+							sql = "select location,time from car where carNum='"+arr[0]+"'";
+							ResultSet resultSet1 = jdbcUtil.selectSql(sql);
+							resultSet1.next();
+							System.out.println(time.format(resultSet1.getLong("time"))+"\n"+resultSet1.getLong("time"));
+							
+							
+							sql = "insert into serverMsg ( message , addTime , type) values ('"+resultSet1.getString("location")+"-"+time.format(resultSet1.getLong("time"))+  "','"+System.currentTimeMillis()+"','selectLocation')";                                        
 							jdbcUtil.addSql(sql);
 						}
 
@@ -228,9 +247,5 @@ public class ServerClient {
 
 		
 	}
-	private static class __Tmp {
-		private static void __tmp() {
-			  javax.swing.JPanel __wbp_panel = new javax.swing.JPanel();
-		}
-	}
+
 }
