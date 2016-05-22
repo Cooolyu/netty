@@ -18,6 +18,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;
 
@@ -25,9 +26,6 @@ public class Zf extends JFrame {
 
 	private JPanel contentPane;
 	private static Zf frame;
-	private JTextField orderNum;
-	private JTextField carNum;
-	private JTextField money;
 
 	/**
 	 * Launch the application.
@@ -55,26 +53,25 @@ public class Zf extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
+		final JLabel orderNum = new JLabel("无");
+		String sql = "SELECT orderNum from `order` WHERE carNum='苏BA5N98' and status=1";
+		JDBCUtil jdbcUtil = new JDBCUtil();
+		
+		try {
+			ResultSet resultSet = jdbcUtil.selectSql(sql);
+			resultSet.next();
+			orderNum.setText(resultSet.getLong("orderNum")+"");
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
 		JLabel label = new JLabel("订单号");
-		
-		JLabel label_1 = new JLabel("车牌号");
-		
-		JLabel label_2 = new JLabel("需付金额");
-		
-		orderNum = new JTextField();
-		orderNum.setColumns(10);
-		
-		carNum = new JTextField();
-		carNum.setColumns(10);
-		
-		money = new JTextField();
-		money.setColumns(10);
 		
 		JButton btnNewButton = new JButton("提交");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//插入记录
-				String str = orderNum.getText()+'-'+carNum.getText()+'-'+money.getText()+'-'+System.currentTimeMillis();
+				String str = orderNum.getText()+'-'+orderNum.getText()+'-'+System.currentTimeMillis();
 				String insertsql = "insert into clientMsg ( message , addTime , type) values ('"+str+"','"+System.currentTimeMillis()+"','zf')";                                        
 				JDBCUtil jdbcUtil = new JDBCUtil();
 				jdbcUtil.addSql(insertsql);
@@ -88,11 +85,8 @@ public class Zf extends JFrame {
 				System.out.println(resultSet.getString("Type"));
 					if(resultSet.getString("Type").equals("zf"));
 						String arr[] = resultSet.getString("message").split("-");
-						if (arr[0].equals("error")) {
-							JOptionPane.showMessageDialog(null,  "支付失败","error",JOptionPane.ERROR_MESSAGE);
-						}else{
-							JOptionPane.showMessageDialog(null,  "支付成功","success",JOptionPane.OK_OPTION );
-						}
+							JOptionPane.showMessageDialog(null,  arr[0],"error",JOptionPane.ERROR_MESSAGE);
+
 							
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -113,6 +107,8 @@ public class Zf extends JFrame {
 				
 			}
 		});
+		
+	
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -124,18 +120,10 @@ public class Zf extends JFrame {
 							.addGap(75)
 							.addComponent(btnNewButton_1))
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(label)
-								.addComponent(label_1)
-								.addComponent(label_2))
-							.addGap(52)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(6)
-									.addComponent(money, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addComponent(carNum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(orderNum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(84, Short.MAX_VALUE))
+							.addComponent(label)
+							.addGap(55)
+							.addComponent(orderNum, GroupLayout.PREFERRED_SIZE, 208, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(91, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -143,18 +131,8 @@ public class Zf extends JFrame {
 					.addGap(48)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label)
-						.addComponent(orderNum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(label_1)
-							.addGap(32)
-							.addComponent(label_2))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(carNum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(money, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+						.addComponent(orderNum, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNewButton)
 						.addComponent(btnNewButton_1))

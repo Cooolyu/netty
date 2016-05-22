@@ -108,44 +108,47 @@ public class ServerClient {
 						}
 						
 						
-						if(type.equals("cancelOrder")){
+						if(type.equals("order")){
 							String temp = "车牌号:"+arr[0]+"\t"+"入场时间:"+arr[1]+"\t"+"入场时长:"+arr[2]+"\t"+"发送时间:"+time.format(addTime);
 							textArea.setText(temp+"\n"+textArea.getText());
-							
+							String carNum = arr[0];
+							String orderTime = arr[1];
+							String orderLong = arr[2];
 							//生成订单号
 							SimpleDateFormat time2=new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 							arr = (time2.format(System.currentTimeMillis())+"").split("-");
 							Random rd = new Random();
 							String orderNum = arr[0]+arr[1]+arr[2]+arr[3]+arr[4]+rd.nextInt(10);
-							sql = "insert into serverMsg ( message , addTime , type) values ('"+orderNum+"','"+System.currentTimeMillis()+"','cancelOrder')";                                        
+							sql = "insert into serverMsg ( message , addTime , type) values ('"+orderNum+"','"+System.currentTimeMillis()+"','order')";                                        
+							jdbcUtil.addSql(sql);
+							sql = "insert into `order`(orderNum,carNum,orderTime,orderLong,status) VALUES("+orderNum+",'"+carNum+"',"+orderTime+","+orderLong+",1)";
 							jdbcUtil.addSql(sql);
 						}
 						
 						if(type.equals("jf")){
-							String temp = "车牌号:"+arr[0]+"\t"+"发送时间:"+time.format(addTime);
+							String temp = "订单号:"+arr[0]+"\t"+"发送时间:"+time.format(addTime);
 							textArea.setText(temp+"\n"+textArea.getText());
-							
-							String result = JOptionPane.showInputDialog("是否成功");
-							
-							if(result.equals("success")){
-								String orderNum = JOptionPane.showInputDialog("订单号");
-								String money = JOptionPane.showInputDialog("需付金额");
-								String intime = JOptionPane.showInputDialog("入场时间");
-								String timelong = JOptionPane.showInputDialog("停车时长");
-								result = result+'-'+orderNum+'-'+money+'-'+intime+'-'+timelong;
+							sql = "SELECT orderLong from `order` WHERE orderNum="+arr[0]+" and status=1";
+							try {
+								resultSet = jdbcUtil.selectSql(sql);
+								resultSet.next();
+								long money = resultSet.getLong("orderLong")*10;
+								sql = "insert into serverMsg ( message , addTime , type) values ('"+money+"','"+System.currentTimeMillis()+"','jf')";                                        
+								jdbcUtil.addSql(sql);
+							} catch (SQLException e1) {
+								e1.printStackTrace();
 							}
-							sql = "insert into serverMsg ( message , addTime , type) values ('"+result+"','"+System.currentTimeMillis()+"','jf')";                                        
-							jdbcUtil.addSql(sql);
+
 						}
 						
 
 						if(type.equals("zf")){
-							String temp = "订单号:"+arr[0]+"\t"+"车牌号:"+arr[1]+"\t金额:"+arr[2]+"\t支付时间:"+arr[3]      +"\t发送时间:"+time.format(addTime);
+							String temp = "订单号:"+arr[0]+"\t发送时间:"+time.format(addTime);
 							textArea.setText(temp+"\n"+textArea.getText());
 							
-							String result = JOptionPane.showInputDialog("是否成功");
-							
-							sql = "insert into serverMsg ( message , addTime , type) values ('"+result+"','"+System.currentTimeMillis()+"','zf')";                                        
+							sql = "UPDATE `order` set `status`=0 WHERE orderNum="+arr[0];
+							jdbcUtil.updateSql(sql);
+							sql = "insert into serverMsg ( message , addTime , type) values ('"+"支付成功"+"','"+System.currentTimeMillis()+"','zf')";                                        
 							jdbcUtil.addSql(sql);
 						}
 						

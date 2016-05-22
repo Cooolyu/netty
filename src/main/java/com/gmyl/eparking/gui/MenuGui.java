@@ -53,8 +53,8 @@ public class MenuGui extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
-				CancelOrder cancelOrder = new CancelOrder();
-				cancelOrder.create();
+				OrderPrep orderPrep = new OrderPrep();
+				orderPrep.create();
 				
 			}
 		});
@@ -80,6 +80,13 @@ public class MenuGui extends JFrame {
 		});
 		
 		JButton btnNewButton_4 = new JButton("取消预约");
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setVisible(false);
+				CancelOrder cancelOrder = new CancelOrder();
+				cancelOrder.create();
+			}
+		});
 		
 		JButton btnNewButton_5 = new JButton("位置查询");
 		btnNewButton_5.addActionListener(new ActionListener() {
