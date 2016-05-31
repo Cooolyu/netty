@@ -65,6 +65,8 @@ public class LoginClient {
 		nameField = new JTextField();
 		nameField.setColumns(10);
 		
+		
+		
 		JButton submit = new JButton("登陆");
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -119,6 +121,8 @@ public class LoginClient {
 					e1.printStackTrace();
 					System.out.println(e1.getMessage());
 				}
+				
+				
 				
 				
 				

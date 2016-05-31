@@ -55,8 +55,16 @@ public class CancelOrder extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		final JLabel orderNum = new JLabel("无");
-		String sql = "SELECT orderNum from `order` WHERE carNum='苏BA5N98' and status=1";
+		
+		String sql="select carNum from user where status=1";
 		JDBCUtil jdbcUtil = new JDBCUtil();
+		try {
+			ResultSet rs = jdbcUtil.selectSql(sql);
+			rs.next();
+			sql = "SELECT orderNum from `order` WHERE carNum='"+rs.getString("carNum")+"' and status=1";
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		try {
 			ResultSet resultSet = jdbcUtil.selectSql(sql);

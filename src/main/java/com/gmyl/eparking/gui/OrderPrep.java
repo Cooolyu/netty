@@ -60,7 +60,7 @@ public class OrderPrep extends JFrame {
 		
 		JLabel label_1 = new JLabel("车牌号：");
 		final JLabel carNum = new JLabel("");
-		String sql = "SELECT carNum from user WHERE name='1'";
+		String sql = "SELECT carNum from user WHERE status=1";
 		JDBCUtil jdbcUtil = new JDBCUtil();
 		
 		try {
@@ -124,6 +124,10 @@ public class OrderPrep extends JFrame {
 
 		orderTime = new JTextField();
 		orderTime.setColumns(10);
+		
+		JLabel label = new JLabel("天");
+		
+		JLabel label_2 = new JLabel("小时");
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -148,7 +152,11 @@ public class OrderPrep extends JFrame {
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(orderTime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))))
-					.addContainerGap(93, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(label)
+						.addComponent(label_2))
+					.addContainerGap(16, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -160,16 +168,19 @@ public class OrderPrep extends JFrame {
 					.addGap(33)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_3)
-						.addComponent(orderTime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(orderTime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label))
 					.addGap(62)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(label_4)
-						.addComponent(orderLong, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+							.addComponent(orderLong, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(label_2)))
 					.addGap(74)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(button)
 						.addComponent(button_1))
-					.addContainerGap(155, Short.MAX_VALUE))
+					.addContainerGap(74, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
 	}

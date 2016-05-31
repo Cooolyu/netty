@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.gmyl.eparking.jdbc.JDBCUtil;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextPane;
@@ -13,6 +16,10 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class MenuGui extends JFrame {
@@ -96,14 +103,39 @@ public class MenuGui extends JFrame {
 				sl.create();
 			}
 		});
+	
+		addWindowListener(new WindowAdapter() {
+			
+
+			public void windowClosing(WindowEvent e) {
+				String sql = "select name from user where status=1";                                        
+				JDBCUtil jdbcUtil = new JDBCUtil();
+				ResultSet resultSet =jdbcUtil.selectSql(sql);
+				
+				try {
+					resultSet.next();
+					System.out.println(resultSet.getString("name"));
+					sql = "update user set status=0 where name='"+resultSet.getString("name")+"'";
+					jdbcUtil.updateSql(sql);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				super.windowClosing(e);
+
+				
+			}
+
+		});
+
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+					.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
 					.addGap(18)
-					.addComponent(btnNewButton_1, GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+					.addComponent(btnNewButton_1, GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnNewButton_2)
 					.addPreferredGap(ComponentPlacement.RELATED)

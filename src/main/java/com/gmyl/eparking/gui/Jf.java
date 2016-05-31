@@ -55,10 +55,22 @@ public class Jf extends JFrame {
 		
 		JButton btnNewButton = new JButton("提交");
 		final JLabel orderNum = new JLabel("无");
-		String sql = "SELECT orderNum from `order` WHERE carNum='苏BA5N98' and status=1";
+		String sql="select carNum from user where status=1";
 		JDBCUtil jdbcUtil = new JDBCUtil();
+		try {
+			ResultSet rs = jdbcUtil.selectSql(sql);
+			rs.next();
+			String carNum =rs.getString("carNum");
+			sql = "SELECT orderNum from `order` WHERE carNum='"+carNum+"'and status=1";
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
+		
+		
 		
 		try {
+			System.out.println(sql+"111");
 			ResultSet resultSet = jdbcUtil.selectSql(sql);
 			resultSet.next();
 			orderNum.setText(resultSet.getLong("orderNum")+"");

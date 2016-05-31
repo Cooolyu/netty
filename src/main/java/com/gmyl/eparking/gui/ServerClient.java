@@ -96,6 +96,8 @@ public class ServerClient {
 								String reMsg = "success";
 								sql = "insert into serverMsg ( message , addTime , type) values ('"+reMsg+"','"+System.currentTimeMillis()+"','login')";                                        
 								jdbcUtil.addSql(sql);
+								sql = "update user set status=1 where name='"+name+"'";
+								jdbcUtil.updateSql(sql);
 							}
 							
 							
